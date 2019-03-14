@@ -1,0 +1,4 @@
+.ipynb_checkpoints/
+venv/
+__pycache__/
+tv_series_db.db
