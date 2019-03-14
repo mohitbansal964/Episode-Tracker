@@ -10,10 +10,10 @@ show_names= fetch_tables(cur)
 data= {}
 db_handler= {}
 for name in show_names:
-	obj= Tv_series()
-	db_handler[name]= Database_handler(cur, obj)
-	db_handler[name].table_name= name.replace(' ', '_')
-	data[name] = db_handler[name].fetch_data()
+    obj= Tv_series()
+    db_handler[name]= Database_handler(cur, obj)
+    db_handler[name].table_name= name.replace(' ', '_')
+    data[name] = db_handler[name].fetch_data()
 
 
 app= tk.Tk()
@@ -242,7 +242,7 @@ def update(epi_number, show_name):
     labels['update'].grid(row= 27, column= 5)
 
 #Update the list of episodes of a tv show
-def update_show(frame, cursor):
+def update_show(frame, mainframe, cursor):
     new_win= tk.Toplevel(app)     #Create a new window
 
     screen_width= 500 
@@ -293,19 +293,17 @@ def update_show(frame, cursor):
             obj.list_vids()
 
         old_list= []
+        new_list= obj.videos_name
         for name in data[table_name]:
             old_list.append(name[0])
-        to_add= obj.videos_name
-        new_list= sorted(list(set(old_list+ to_add)))
-        obj.videos_name= new_list
-        db_handler[table_name].drop_table()
-        db_handler[table_name]= Database_handler(cursor, obj)
-        db_handler[table_name].create_table()
-        db_handler[table_name].data_entry()
+        for name in new_list:
+            if name not in old_list:
+                db_handler[table_name].one_data_entry(name, seen= False, unseen= True)
         conn.commit()
-        data[table_name] = db_handler[table_name].fetch_data()
-
+        data[table_name]= db_handler[table_name].fetch_data()
         new_win.destroy()
+        show_list(mainframe, data[table_name], table_name)
+
     button= tk.Button(new_win, text= 'Submit', command= lambda : get_and_update_data())
     button.grid(row= 3, column=8 )
     
@@ -343,7 +341,7 @@ dlt_button.grid(row= 30, column= 2, columnspan= 2)
 
 #Update folder button
 update_button= tk.Button(bottombar, text= 'Update', width= 10, 
-    command= lambda frame=  sidebar, cursor= cur: update_show(frame, cursor))
+    command= lambda frame=  sidebar, mainframe= main_area, cursor= cur: update_show(frame, mainframe, cursor))
 update_button.grid(row= 30, column= 4, columnspan= 2)
 
 
@@ -357,7 +355,7 @@ context_menu.add_command(label= 'Add',
 context_menu.add_command(label= 'Delete', 
     command= lambda frame=  sidebar, mainframe= main_area, cursor= cur: delete_show(frame, mainframe, cursor))
 context_menu.add_command(label= 'Update', 
-    command= lambda frame=  sidebar, cursor= cur: update_show(frame, cursor))
+    command= lambda frame=  sidebar, mainframe= main_area, cursor= cur: update_show(frame, mainframe, cursor))
 
 #Context Menu Popup
 def do_popup(event):
@@ -369,19 +367,5 @@ def do_popup(event):
         context_menu.grab_release()
 sidebar.bind("<Button-3>", do_popup)
 
-
-#Context Menu Button
-# context_menu_button= tk.Menu(sidebar, tearoff= 0)
-# context_menu_button.add_command(label= 'Delete', command= lambda: delete_show_helper("") )
-# def do_popup_button(event):
-#     x= show_names[int(str(event.widget)[-1])]
-#     # display the popup menu
-#     try:
-#         context_menu_button.tk_popup(event.x, event.y_root)
-#     finally:
-#         # make sure to release the grab (Tk 8.0a1 only)
-#         context_menu.grab_release()
-# for b in buttons:
-#     buttons[b].bind("<Button-3>", do_popup_button)
 
 app.mainloop()
