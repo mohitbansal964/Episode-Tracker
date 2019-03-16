@@ -32,6 +32,7 @@ seen_rbs= {}      #Seen Radiobuttons
 unseen_rbs= {}    #Unseen Radiobuttons
 var= {}           #Radiobutton Variables
 labels= {}
+context_menu_buttons= {}  #Context Menu for each sidebar button
 
 #Add a new TV show and store it in the database
 def add_new_show(frame, mainframe, cursor):
@@ -130,15 +131,22 @@ def create_show_buttons(frame, main_frame, cursor):
         buttons[name]= tk.Button(frame, text= name, width= 30, 
             command= lambda frame= main_frame, epi_list= data[name], show_name= name: show_list(frame, epi_list, show_name))
         buttons[name].grid(padx= 20, pady= 5)
-
+        context_menu_buttons[name]= tk.Menu(frame, tearoff= 0)
+        context_menu_buttons[name].add_command(label= 'Delete', 
+            command= lambda frame=  sidebar, mainframe= main_area, cursor= cur, 
+            show_name= name: delete_show_helper(sidebar, main_area, cur, show_name) )
+        buttons[name].bind("<Button-3>", lambda event, name= name: context_menu_buttons[name].tk_popup(event.x_root, event.y_root))
+        
 
 #Delete a Show
-def delete_show_helper(show_name):
+def delete_show_helper(frame, mainframe, cursor, show_name):
     try:
         db_handler[show_name].drop_table()
         del db_handler[show_name]
         del data[show_name]
         conn.commit()
+        create_show_buttons(frame, mainframe, cursor)
+        clear_screen()
     except Exception as e:
         print(e)
         messagebox.showerror('Incorrect Show Name', "Entered show name is not in the list.")
@@ -170,10 +178,8 @@ def delete_show(frame, mainframe, cursor):
 
     def get_and_delete_table():
         show_name= show_name_.get()
-        delete_show_helper(show_name)
+        delete_show_helper(frame, mainframe, cursor, show_name)
         new_win.destroy()
-        create_show_buttons(frame, mainframe, cursor)
-        clear_screen()
 
     button= tk.Button(new_win, text= 'Submit', command= lambda : get_and_delete_table())
     button.grid(row= 5, column=8 )
@@ -318,31 +324,35 @@ main_area.grid(row= 0, column= 1, rowspan= 30, columnspan= 34, sticky = tk.E+ tk
 sidebar= tk.Frame(app, bg= 'gray', relief='sunken', borderwidth=5)
 sidebar.grid(row= 0, column= 0, rowspan= 29, columnspan= 1, sticky = tk.W+ tk.N+ tk.S+ tk.E)
 label= tk.Label(sidebar, text= 'TV Shows', font= LARGE_FONT, bg= 'cyan', bd= 5, relief= 'sunken')
-label.grid()
-create_show_buttons(sidebar, main_area, cur)
+label.grid(padx= 90, pady= 5)
 
 
 #Bottombar
 bottombar= tk.Frame(app, bg= 'gray', relief='sunken', borderwidth=5)
-bottombar.grid(row= 29, column= 0, rowspan= 1, columnspan= 1, sticky= tk.W+ tk.N+ tk.S+ tk.E)
-
+bottombar.grid(row= 29, column= 0, rowspan= 1, columnspan= 1, sticky=  tk.N+ tk.S+ tk.E+ tk.W )
+#A:\Videos\TV SERIES\Young Sheldon
 
 #Add new folder button
 add_button= tk.Button(bottombar, text= 'Add', width= 10, 
     command= lambda  frame=  sidebar, mainframe= main_area, cursor= cur: add_new_show(frame, mainframe, cursor))
-add_button.grid(row= 30, column= 0, columnspan= 2)
+add_button.grid(row= 29, column= 0, columnspan= 2, sticky= tk.N+ tk.W, padx= 30, pady= 15)
 
 
 #Delete Button
 dlt_button= tk.Button(bottombar, text= 'Delete', width= 10, 
     command= lambda frame=  sidebar, mainframe= main_area, cursor= cur: delete_show(frame, mainframe, cursor))
-dlt_button.grid(row= 30, column= 2, columnspan= 2)
+dlt_button.grid(row= 29, column= 2, columnspan= 2, sticky= tk.N+ tk.E, padx= 10, pady= 15)
 
 
 #Update folder button
 update_button= tk.Button(bottombar, text= 'Update', width= 10, 
     command= lambda frame=  sidebar, mainframe= main_area, cursor= cur: update_show(frame, mainframe, cursor))
-update_button.grid(row= 30, column= 4, columnspan= 2)
+update_button.grid(row= 30, column= 0, columnspan= 2, sticky= tk.S+ tk.W, padx= 30)
+
+#Clear Screen Button
+clear_screen_button= tk.Button(bottombar, text= 'Clear Screen', width= 10,
+    command= lambda : clear_screen())
+clear_screen_button.grid(row= 30, column= 2, columnspan= 2, sticky= tk.S+ tk.E, padx= 10)
 
 
 #Menu bar
@@ -357,15 +367,8 @@ context_menu.add_command(label= 'Delete',
 context_menu.add_command(label= 'Update', 
     command= lambda frame=  sidebar, mainframe= main_area, cursor= cur: update_show(frame, mainframe, cursor))
 
-#Context Menu Popup
-def do_popup(event):
-    # display the popup menu
-    try:
-        context_menu.tk_popup(event.x, event.y_root)
-    finally:
-        # make sure to release the grab (Tk 8.0a1 only)
-        context_menu.grab_release()
-sidebar.bind("<Button-3>", do_popup)
+sidebar.bind("<Button-3>", lambda event: context_menu.tk_popup(event.x, event.y_root))
 
-
+create_show_buttons(sidebar, main_area, cur)
 app.mainloop()
+conn.close()

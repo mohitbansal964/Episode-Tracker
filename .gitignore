@@ -1,4 +1,7 @@
 .ipynb_checkpoints/
 venv/
 __pycache__/
+build/
+dist/
 tv_series_db.db
+*.pyc
