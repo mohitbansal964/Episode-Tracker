@@ -330,7 +330,7 @@ label.grid(padx= 90, pady= 5)
 #Bottombar
 bottombar= tk.Frame(app, bg= 'gray', relief='sunken', borderwidth=5)
 bottombar.grid(row= 29, column= 0, rowspan= 1, columnspan= 1, sticky=  tk.N+ tk.S+ tk.E+ tk.W )
-#A:\Videos\TV SERIES\Young Sheldon
+
 
 #Add new folder button
 add_button= tk.Button(bottombar, text= 'Add', width= 10, 
@@ -356,7 +356,18 @@ clear_screen_button.grid(row= 30, column= 2, columnspan= 2, sticky= tk.S+ tk.E, 
 
 
 #Menu bar
+menubar= tk.Menu(app)
 
+editmenu= tk.Menu(menubar, tearoff= 0)
+editmenu.add_command(label="Add", 
+    command= lambda  frame=  sidebar, mainframe= main_area, cursor= cur: add_new_show(frame, mainframe, cursor))
+editmenu.add_command(label="Delete", 
+    command= lambda frame=  sidebar, mainframe= main_area, cursor= cur: delete_show(frame, mainframe, cursor))
+editmenu.add_command(label="Update", 
+    command= lambda frame=  sidebar, mainframe= main_area, cursor= cur: update_show(frame, mainframe, cursor))
+editmenu.add_separator()
+editmenu.add_command(label="Exit", command= app.quit)
+menubar.add_cascade(label="Edit", menu=editmenu)
 
 #Context menu
 context_menu= tk.Menu(sidebar, tearoff= 0)
@@ -370,5 +381,7 @@ context_menu.add_command(label= 'Update',
 sidebar.bind("<Button-3>", lambda event: context_menu.tk_popup(event.x, event.y_root))
 
 create_show_buttons(sidebar, main_area, cur)
+
+app.config(menu= menubar)
 app.mainloop()
 conn.close()
