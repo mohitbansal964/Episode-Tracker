@@ -10,7 +10,7 @@ base = None
 if sys.platform == 'win32':
     base = "Win32GUI"
 
-executables = [cx_Freeze.Executable("app.py", base=base, icon= 'episode_tracker_icon.ico')]
+executables = [cx_Freeze.Executable("Episode Tracker.py", base=base, icon= 'episode_tracker_icon.ico')]
 
 cx_Freeze.setup(
     name = "Episode Tracker",
@@ -21,7 +21,7 @@ cx_Freeze.setup(
     						 ]
     						 }
     		},
-    version = "0.01",
+    version = "1.1",
     description = "Keep track of seen and unseen episodes of TV shows.",
     executables = executables
     )
