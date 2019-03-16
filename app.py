@@ -382,6 +382,7 @@ sidebar.bind("<Button-3>", lambda event: context_menu.tk_popup(event.x, event.y_
 
 create_show_buttons(sidebar, main_area, cur)
 
+app.iconbitmap('episode_tracker_icon.ico')
 app.config(menu= menubar)
 app.mainloop()
 conn.close()
