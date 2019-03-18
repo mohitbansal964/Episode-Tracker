@@ -23,7 +23,7 @@ Windows users can download the zip from [release](https://github.com/mohitbansal
 Extract the zip and open ```Episode Tracker.exe```.
 
 After that Episode Tracker application should appear:
-<img src="Screenshots/main_screen.jpg" alt="Main Screen" >  
+<img src="Screenshots/main_screen.JPG" alt="Main Screen" >  
 
 ## Add a new show  
 1. Click on Add Button or Right Click in Sidebar > Add or Click on Edit in Menu Bar > Add.
@@ -33,12 +33,12 @@ After that Episode Tracker application should appear:
 	* Enter Directory Path: Absolute Path to Directory
 3. Press Enter or Click on Submit.
 <p align="center">
-<img src="Screenshots/add_screen.jpg" alt="Add Screen" >  
+<img src="Screenshots/add_screen.JPG" alt="Add Screen" >  
 </p>
 
 A new button in the sidebar will be created like this: 
 <p align="center">
-<img src="Screenshots/new_show_sidebar.jpg" alt="New Show" >  
+<img src="Screenshots/new_show_sidebar.JPG" alt="New Show" >  
 </p>
 
 ## Update a show
@@ -48,7 +48,7 @@ A new button in the sidebar will be created like this:
 	* Enter Directory Path: Absolute Path to Directory
 3. Click on Submit.
 <p align="center">
-<img src="Screenshots/update_screen.jpg" alt="Update Screen" >  
+<img src="Screenshots/update_screen.JPG" alt="Update Screen" >  
 </p>
 
 List of the episodes will be updated.
@@ -58,6 +58,7 @@ List of the episodes will be updated.
 Right Click on show button and Click Delete.
 <p align="center">
 <img src="Screenshots/delete.jpg" alt="Delete" >  
+<br>
 OR
 </p>
 1. Click on Delete Button or Right Click in Sidebar > Delete or Click on Edit in Menu Bar > Delete.  
@@ -65,7 +66,7 @@ OR
 	* Enter Show Name: Friends Season 10 (This must match with an existing button in the sidebar.)  
 3. Click on Submit.
 <p align="center">
-<img src="Screenshots/delete_screen.jpg" alt="Delete Screen" >  
+<img src="Screenshots/delete_screen.JPG" alt="Delete Screen" >  
 </p>
 
 
