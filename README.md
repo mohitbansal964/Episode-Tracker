@@ -61,10 +61,10 @@ Right Click on show button and Click Delete.
 <br>
 OR
 </p>
-1. Click on Delete Button or Right Click in Sidebar > Delete or Click on Edit in Menu Bar > Delete.  
-2. Fill in the details.
-	* Enter Show Name: Friends Season 10 (This must match with an existing button in the sidebar.)  
-3. Click on Submit.
+1. Click on Delete Button or Right Click in Sidebar > Delete or Click on Edit in Menu Bar > Delete. <br>
+2. Fill in the details. <br>
+	* Enter Show Name: Friends Season 10 (This must match with an existing button in the sidebar.)  <br>
+3. Click on Submit. <br>
 <p align="center">
 <img src="Screenshots/delete_screen.JPG" alt="Delete Screen" >  
 </p>
