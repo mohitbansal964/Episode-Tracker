@@ -12,8 +12,16 @@ if sys.platform == 'win32':
 
 executables = [cx_Freeze.Executable("Episode Tracker.py", base=base, icon= 'episode_tracker_icon.ico')]
 
+with open('README.md', encoding="utf8") as f:
+    readme = f.read()
+
+with open('LICENSE.txt') as f:
+    license = f.read()
+
 cx_Freeze.setup(
     name= "Episode Tracker",
+    author= "Mohit Bansal",
+    author_email= "bansalmohit72@gmail.com",
     options= {'build_exe':{ 'packages': ['tkinter', 'os', 'sqlite3'],
                                         'include_files':['utils.py', 'tv_series_db.db',
                                         'episode_tracker_icon.ico',
@@ -21,5 +29,7 @@ cx_Freeze.setup(
                                         os.path.join(PYTHON_INSTALL_DIR, 'DLLs', 'tcl86t.dll')]}},
     version= "1.1",
     description= "Keep track of seen and unseen episodes of TV shows.",
+    long_description= readme,
+    license= license,
     executables= executables
     )
